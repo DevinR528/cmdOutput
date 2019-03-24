@@ -1,0 +1,14 @@
+{
+  "name": "threads",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Devin Ragotzy <devin.ragotzy@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "parse-help": "^1.0.0"
+  }
+}
