@@ -2,3 +2,6 @@
 [async-base] 183.185366 at: 2019-03-25 with 2 entries in array
 [threaded-base] 262.157499 at: 2019-03-25 with 2 entries in array
 ================================================================
+[async-desktop] 72.879724 at: 2019-03-25 with 2 entries in array
+[threaded-desktop] 115.326043 at: 2019-03-25 with 2 entries in array
+===================================================================
