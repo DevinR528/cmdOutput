@@ -1,13 +1,29 @@
 const cp = require('child_process')
-const helpParse = require('parse-help');
+const { performance, PerformanceObserver } = require('perf_hooks')
+const fs = require('fs')
+const helpParse = require('parse-help')
 
-const cmdParserThread = require('./thread');
+const cmdParserThread = require('./thread')
 
-const cmds = ['node', 'npm', 'tar'];
+// names the test in the output file to track changes
+const name = process.argv[2] ? `-${process.argv[2]}` : ''
+
+const CMDS = ['node', 'tar'];
+const obs = new PerformanceObserver((items, observe) => {
+    let bench = '';
+    items.getEntries().forEach(async val => {
+        bench += `[${val.name}${name}] ${val.duration} at: ${new Date().toISOString().split('T')[0]} with ${CMDS.length} entries in array\n`
+    })
+    const spacer = `${'='.repeat(bench.length/2)}\n`
+    fs.appendFile('./bench.txt', bench + spacer, err => {
+        if (err) console.log('bench mark was not saved try again')
+    })
+    observe.disconnect();
+});
+obs.observe({ entryTypes: ['measure'], buffered: true });
 
 // async non thread test
-cmdParserAsync('npm')
-//Promise.all(cmds.map(cmdParser))
+//cmdParserAsync('npm')
 /**
    * @function 
    * @param {String} command
@@ -17,22 +33,32 @@ cmdParserAsync('npm')
 function cmdParserAsync(command) {
     return new Promise((resolve, reject) => {
         const cmd = command + ' --help';
-        const help = cp.exec(cmd, (err, stout, stin) => {
+        cp.exec(cmd, (err, stout, stin) => {
             if (err) {
-                console.log('[stout] ' + stout)
-                console.log('[stin] ' + stin)
-                console.log('[err] ' + err)
+                reject(err)
             }
             const helpObj = helpParse(stout)
-            console.log(helpObj)
             resolve(helpObj)
         });
     });
 }
 
-// thread test
-// cmdParserThread('npm', 'install', '--help').then(cmdObj => {
-//     console.log(cmdObj)
-// }).catch(err => {
-//     console.log(err)
-// });
+// performance test both
+(async _ => {
+    try {
+        // async one process
+        performance.mark('async1')
+        await Promise.all(CMDS.map(cmdParserAsync))
+        performance.mark('async2')
+        
+        // then threaded
+        performance.mark('thread1')
+        await Promise.all(CMDS.map(cmdParserThread))
+        performance.mark('thread2')
+
+        performance.measure('async', 'async1', 'async2')
+        performance.measure('threaded', 'thread1', 'thread2')
+    } catch (err) {
+        console.log(err)
+    }      
+})()
