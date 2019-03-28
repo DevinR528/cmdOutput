@@ -5,3 +5,6 @@
 [async-desktop] 72.879724 at: 2019-03-25 with 2 entries in array
 [threaded-desktop] 115.326043 at: 2019-03-25 with 2 entries in array
 ===================================================================
+[async-new-parser] 71.35947 at: 2019-03-28 with 2 entries in array
+[threaded-new-parser] 113.083745 at: 2019-03-28 with 2 entries in array
+=====================================================================

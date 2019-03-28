@@ -1,7 +1,7 @@
 const { Worker, isMainThread, parentPort, workerData } = require('worker_threads');
 const cp = require('child_process')
 
-const helpParse = require('parse-help');
+const helpParse = require('./helpParser');
   
 if (isMainThread) {
   module.exports = cmdParser;

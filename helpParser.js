@@ -9,12 +9,12 @@
  * of shape {
  *  cmdName: 'bla',
  *  usage: 'bla bla',
- *  args: [{
- *    --name: {
+ *  args: {
+ *    --name | -n: {
  *      alias: '-n',
  *      doc: 'bla bla bla'
  *    }
- *  }, ect]
+ *  }, ect}
  * }
  */
 
@@ -129,50 +129,26 @@ parse_doc_options = function(doc) {
 /**
  * 
  * @param  {String} doc the --help output as string
- * @param  {String} cmd the name of the cmd run 
+ * @param  {String} [cmd] the name of the cmd run 
  * @return {Object} cmd run, usage, and all the help output
  */
 function parseHelpOutput(doc, cmd) {
   const use = printable_usage(doc)
   const opts = parse_doc_options(doc)
+
   const cmdObj = {
     cmdName: cmd,
-    useage: use,
-    args: []
+    usage: use,
+    args: {}
   }
-  console.log(use)
-
   for (let i = 0; i < opts.length; i++) {
     const o = opts[i];
-    cmdObj.args.push({
-      [o.long || o.short]: {
-        aliase: o.short ? o.short : null,
+    cmdObj.args[o.long || o.short] = {
+        alias: o.short ? o.short : null,
         doc: o.docs ? o.docs : null
       }
-    })
+    }
+    return cmdObj
   }
-  console.log(cmdObj)
-}
+
 module.exports = parseHelpOutput
-
-
-
-const doc =`Example of program with many options using parseHelpOutput.
-
-Usage:
-  options_example.coffee [--statistics] [--count] [--benchmark] PATH...
-  options_example.coffee (--doctest | --testsuite=DIR)
-  options_example.coffee --version
-
-Options:
-  -h --help            show this help message and exit
-  --version            show version and exit
-  -v --verbose         print status messages
-  -q --quiet           report only file names
-  -r --repeat          show all occurrences of the same error
-  --exclude=PATTERNS   exclude files or directories which match these comma
-                       separated patterns [default: .svn,CVS,.bzr,.hg,.git]
-
-`;
-
-parseHelpOutput(doc, 'node');

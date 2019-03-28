@@ -1,6 +1,6 @@
 {
-  "name": "threads",
-  "version": "0.0.1",
+  "name": "help-parser",
+  "version": "0.1.0",
   "description": "parse unix help output to object",
   "main": "index.js",
   "scripts": {

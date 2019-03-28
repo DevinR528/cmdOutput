@@ -1,7 +1,7 @@
 const cp = require('child_process')
 const { performance, PerformanceObserver } = require('perf_hooks')
 const fs = require('fs')
-const helpParse = require('parse-help')
+const helpParse = require('./helpParser')
 
 const cmdParserThread = require('./thread')
 
