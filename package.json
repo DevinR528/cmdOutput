@@ -1,14 +1,21 @@
 {
   "name": "threads",
   "version": "0.0.1",
-  "description": "",
+  "description": "parse unix help output to object",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "tap tests/*.js"
   },
   "author": "Devin Ragotzy <devin.ragotzy@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/DevinR528/cmdOutput.git"
+  },
   "license": "MIT",
-  "dependencies": {
-    "parse-help": "^1.0.0"
+  "keywords": ["parse", "--help", "unix", "output", "command line"],
+  "dependencies": {},
+  "devDependencies": {
+    "tap": "^12.6.1"
   }
 }
