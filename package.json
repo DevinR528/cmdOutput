@@ -1,6 +1,6 @@
 {
   "name": "help-parser",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "parse unix help output to object",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,13 @@
     "url": "git://github.com/DevinR528/cmdOutput.git"
   },
   "license": "MIT",
-  "keywords": ["parse", "--help", "unix", "output", "command line"],
+  "keywords": [
+    "parse",
+    "--help",
+    "unix",
+    "output",
+    "command line"
+  ],
   "dependencies": {},
   "devDependencies": {
     "tap": "^12.6.1"
