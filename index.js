@@ -39,21 +39,29 @@ Option = (function() {
   // added docs to the object
   Option.parse = function(description) {
     var argcount, long, matched, options, s, short, value, _, _i, _len, _ref, _ref1, _ref2, _ref3;
-    description = description.replace(/^\s*|\s*$/g, '').split('\n');
-    if (description.length > 1) {
-      for (let i = 1; i < description.length; i++) {
-        description[i] = description[i].trim();
+    let doc = description.replace(/^\s*|\s*$/g, '').split('\n');
+    if (doc.length > 1) {
+      let d = [doc[0]];
+      for (let i = 1; i < doc.length; i++) {
+        if (doc[i] === '') {
+          break;
+        }
+        d.push(doc[i].trim())
       }
+      doc = d;
     }
-    description = description.join('');
-    _ref1 = (_ref = description.match(/(.*?)  (.*)/)) != null ? _ref 
-      : [null, description, '']
-    _ = _ref1[0], options = _ref1[1], description = _ref1[2];
+    doc = doc.join(' ');
+    _ref1 = (_ref = doc.match(/(.*?)  (.*)/)) != null ? _ref 
+      : [null, doc, '']
+    _ = _ref1[0], options = _ref1[1], doc = _ref1[2];
+    if (options.match(/\[\=/)) {
+      options = options.replace(/\[\=/, '=[');
+    }
     options = options.replace(/,|=/g, ' ');
     _ref2 = [null, null, 0, false, null], short = _ref2[0],
-    long = _ref2[1], argcount = _ref2[2], value = _ref2[3],
+    long = _ref2[1], argcount = _ref2[2], value = _ref2[3]
     //added
-    docs = description.trim();
+    const docs = doc.trim();
     _ref3 = options.split(/\s+/);
     for (_i = 0, _len = _ref3.length; _i < _len; _i++) {
       s = _ref3[_i];
@@ -66,7 +74,7 @@ Option = (function() {
       }
     }
     if (argcount === 1) {
-      matched = /\[default:\s+(.*)\]/.exec(description);
+      matched = /\[default:\s+(.*)\]/.exec(doc);
       value = matched ? matched[1] : false;
     }
     return new Option(short, long, argcount, value, docs);
@@ -117,6 +125,7 @@ printable_usage = function(doc, name) {
 
 parse_doc_options = function(doc) {
   var s, _i, _len, _ref, _results;
+  // remove all after description and \n
   _ref = doc.split(/^\s*-|\n\s*-/).slice(1);
   _results = [];
   for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -135,9 +144,9 @@ parse_doc_options = function(doc) {
 function parseHelpOutput(doc, cmd) {
   const use = printable_usage(doc)
   const opts = parse_doc_options(doc)
-
+  const name = use[1].split(' ')[0];
   const cmdObj = {
-    cmdName: cmd,
+    cmdName: cmd || name,
     usage: use,
     args: {}
   }
