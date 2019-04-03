@@ -63,7 +63,7 @@ gives
 or clone the [git repo](https://github.com/DevinR528/cmdOutput) 
 and help develop and add to this project
 
-[build-badge]: https://img.shields.io/travis/user/repo/master.png?style=flat-square
+[build-badge]: https://travis-ci.com/DevinR528/cmdOutput.svg?branch=master
 [build]: https://travis-ci.com/DevinR528/cmdOutput.svg?branch=master
 
 [npm-badge]: https://img.shields.io/npm/v/npm-package.png?style=flat-square
