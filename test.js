@@ -1,7 +1,6 @@
 const cp = require('child_process')
 
-const helpParse = require('./index')
-
+const helpParse = require('./src/index')
 
 
 function cmdParserAsync(command) {

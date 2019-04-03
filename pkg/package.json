@@ -1,0 +1,36 @@
+{
+  "name": "help-parser",
+  "description": "Parse unix help output to object",
+  "version": "0.3.3",
+  "license": "MIT",
+  "esnext": "dist-src/index.js",
+  "main": "dist-node/index.js",
+  "types": "dist-types/index.d.ts",
+  "pika": true,
+  "sideEffects": false,
+  "keywords": [
+    "parse",
+    "--help",
+    "unix",
+    "output",
+    "command line"
+  ],
+  "files": [
+    "dist-*/"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/DevinR528/cmdOutput.git"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@pika/plugin-build-node": "^0.3.14",
+    "@pika/plugin-build-types": "^0.3.14",
+    "@pika/plugin-build-web": "^0.3.14",
+    "@pika/plugin-standard-pkg": "^0.3.14",
+    "tap": "^12.6.1"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  }
+}

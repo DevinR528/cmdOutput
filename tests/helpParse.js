@@ -1,5 +1,5 @@
 const tap = require('tap');
-const parseHelp = require('../index')
+const parseHelp = require('../src/index')
 
 const doc =`Example of program with many options using parseHelpOutput.
 
@@ -64,7 +64,8 @@ oewnv noidn nsdn indid mdmlmk.
 `;
 tap.test('description after args one line usage', t => {
   // altered usage line so 
-  const usage = [ usageArr[0].concat(' ', usageArr[1]), usageArr[2] ]
+  const usage = [ usageArr[0].concat(' ', usageArr[1]), usageArr[2] ];
+  
   const help = parseHelp(afterArgDoc);
   t.same(help.cmdName, 'node')
   t.same(help.usage, usage);

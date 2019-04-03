@@ -3,7 +3,9 @@
   "version": "0.3.3",
   "description": "parse unix help output to object",
   "main": "index.js",
-  "engines" : { "node" : ">=8.0.0" },
+  "engines": {
+    "node": ">=8.0.0"
+  },
   "scripts": {
     "start": "node index.js",
     "test": "tap tests/*.js"
