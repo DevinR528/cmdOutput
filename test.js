@@ -16,4 +16,4 @@ function cmdParserAsync(command) {
       });
   });
 }
-cmdParserAsync('cp').then(help => console.log(help))
+cmdParserAsync('tar').then(help => console.log(help))

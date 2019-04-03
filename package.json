@@ -3,6 +3,7 @@
   "version": "0.3.3",
   "description": "parse unix help output to object",
   "main": "index.js",
+  "engines" : { "node" : ">=8.0.0" },
   "scripts": {
     "start": "node index.js",
     "test": "tap tests/*.js"
@@ -21,7 +22,24 @@
     "command line"
   ],
   "dependencies": {},
+  "@pika/pack": {
+    "pipeline": [
+      [
+        "@pika/plugin-standard-pkg"
+      ],
+      [
+        "@pika/plugin-build-node"
+      ],
+      [
+        "@pika/plugin-build-types"
+      ]
+    ]
+  },
   "devDependencies": {
+    "@pika/plugin-build-node": "^0.3.14",
+    "@pika/plugin-build-types": "^0.3.14",
+    "@pika/plugin-build-web": "^0.3.14",
+    "@pika/plugin-standard-pkg": "^0.3.14",
     "tap": "^12.6.1"
   }
 }

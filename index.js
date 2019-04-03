@@ -20,25 +20,14 @@
 
 Option = (function() {
 
-  function Option(short, long, argcount, value, docs) {
+  function Option(short, long, docs) {
     this.short = short != null ? short : null;
     this.long = long != null ? long : null;
     this.docs = docs != null ? docs : null;
-    this.argcount = argcount != null ? argcount : 0;
-    this.value = value != null ? value : false;
   }
-
-  Option.prototype.toString = function() {
-    return "Option(" + this.short + ", " + this.long + ", " + this.argcount + ", " + this.value + ")";
-  };
-
-  Option.prototype.name = function() {
-    return this.long || this.short;
-  };
 
   // added docs to the object
   Option.parse = function(description) {
-    var argcount, long, matched, options, s, short, value, _, _i, _len, _ref, _ref1, _ref2, _ref3;
     let doc = description.replace(/^\s*|\s*$/g, '').split('\n');
     if (doc.length > 1) {
       let d = [doc[0]];
@@ -51,52 +40,28 @@ Option = (function() {
       doc = d;
     }
     doc = doc.join(' ');
-    _ref1 = (_ref = doc.match(/(.*?)  (.*)/)) != null ? _ref 
+    let _ref
+    const _ref1 = (_ref = doc.match(/(.*?)  (.*)/)) != null ? _ref 
       : [null, doc, '']
-    _ = _ref1[0], options = _ref1[1], doc = _ref1[2];
+    let options = _ref1[1]; doc = _ref1[2];
     if (options.match(/\[\=/)) {
       options = options.replace(/\[\=/, '=[');
     }
     options = options.replace(/,|=/g, ' ');
-    _ref2 = [null, null, 0, false, null], short = _ref2[0],
-    long = _ref2[1], argcount = _ref2[2], value = _ref2[3]
+    let short = null;
+    let long = null
     //added
     const docs = doc.trim();
-    _ref3 = options.split(/\s+/);
-    for (_i = 0, _len = _ref3.length; _i < _len; _i++) {
-      s = _ref3[_i];
+    const _ref3 = options.split(/\s+/);
+    for (let i = 0; i < _ref3.length; i++) {
+      const s = _ref3[i];
       if (s.slice(0, 2) === '--') {
         long = s;
       } else if (s[0] === '-') {
         short = s;
-      } else {
-        argcount = 1;
       }
     }
-    if (argcount === 1) {
-      matched = /\[default:\s+(.*)\]/.exec(doc);
-      value = matched ? matched[1] : false;
-    }
-    return new Option(short, long, argcount, value, docs);
-  };
-
-  Option.prototype.match = function(left, collected) {
-    var l, left_;
-    if (collected == null) {
-      collected = [];
-    }
-    left_ = (function() {
-      var _i, _len, _results;
-      _results = [];
-      for (_i = 0, _len = left.length; _i < _len; _i++) {
-        l = left[_i];
-        if (l.constructor !== Option || this.short !== l.short || this.long !== l.long) {
-          _results.push(l);
-        }
-      }
-      return _results;
-    }).call(this);
-    return [left.join(', ') !== left_.join(', '), left_, collected];
+    return new Option(short, long, docs);
   };
 
   return Option;
@@ -107,9 +72,9 @@ printable_usage = function(doc, name) {
   var usage_split = doc.split(/(usage:)/i);
   // TODO
   if (usage_split.length < 3) {
-    throw new Error('"usage:" (case-insensitive) not found.');
+    return null;
   } else if (usage_split.length > 3) {
-    throw new Error('More than one "usage:" (case-insensitive).');
+    return null;
   }
 
   const use = usage_split.slice(1).join('')
@@ -124,12 +89,11 @@ printable_usage = function(doc, name) {
 };
 
 parse_doc_options = function(doc) {
-  var s, _i, _len, _ref, _results;
   // remove all after description and \n
-  _ref = doc.split(/^\s*-|\n\s*-/).slice(1);
-  _results = [];
-  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-    s = _ref[_i];
+  const _ref = doc.split(/^\s*-|\n\s*-/).slice(1);
+  let _results = [];
+  for (let i = 0; i < _ref.length; i++) {
+    const s = _ref[i];
     _results.push(Option.parse('-' + s));
   }
   return _results;
@@ -144,11 +108,27 @@ parse_doc_options = function(doc) {
 function parseHelpOutput(doc, cmd) {
   const use = printable_usage(doc)
   const opts = parse_doc_options(doc)
-  const name = use[1].split(' ')[0];
+  const name = use !== null ? getName(use) : null;
   const cmdObj = {
     cmdName: cmd || name,
     usage: use,
     args: {}
+  }
+
+  function getName(usage) {
+    let val;
+    for (let i = 0; i < usage.length; i++) {
+      const ele = usage[i];
+      if (ele.match(/(usage: )/i)) {
+        val = ele.split(/(usage: )/i)[2];
+        val = val.split(' ');
+        return val[0].match(/\[|\(/g) ? null : val[0];
+      } else {
+        val = usage[1].split(' ')[0];
+        return val.match(/\[|\(/g) ? null : val;
+      }
+      
+    }
   }
   for (let i = 0; i < opts.length; i++) {
     const o = opts[i];
