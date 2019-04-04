@@ -1,6 +1,6 @@
 {
   "name": "help-parser",
-  "version": "0.3.3",
+  "version": "1.0.0",
   "description": "parse unix help output to object",
   "main": "index.js",
   "engines": {
