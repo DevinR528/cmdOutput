@@ -32,7 +32,7 @@ const Option = (function() {
     if (doc.length > 1) {
       let d = [doc[0]];
       for (let i = 1; i < doc.length; i++) {
-        if (doc[i] === '') {
+        if (doc[i].trim() === '') {
           break;
         }
         d.push(doc[i].trim())

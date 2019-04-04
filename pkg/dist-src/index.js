@@ -13,8 +13,8 @@
  *    --name | -n: {
  *      alias: '-n',
  *      doc: 'bla bla bla'
- *    }
- *  }, ect}
+ *    }, next arg obj..
+ *  }
  * }
  */
 const Option = function () {
@@ -32,7 +32,7 @@ const Option = function () {
       let d = [doc[0]];
 
       for (let i = 1; i < doc.length; i++) {
-        if (doc[i] === '') {
+        if (doc[i].trim() === '') {
           break;
         }
 

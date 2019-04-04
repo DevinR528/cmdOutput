@@ -1,7 +1,7 @@
 {
   "name": "help-parser",
-  "description": "Parse unix help output to object",
-  "version": "0.3.3",
+  "description": "parse unix help output to object",
+  "version": "1.0.0",
   "license": "MIT",
   "esnext": "dist-src/index.js",
   "main": "dist-node/index.js",
@@ -16,7 +16,9 @@
     "command line"
   ],
   "files": [
-    "dist-*/"
+    "dist-*/",
+    "assets/",
+    "bin/"
   ],
   "repository": {
     "type": "git",

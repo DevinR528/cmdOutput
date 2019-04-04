@@ -15,4 +15,4 @@ function cmdParserAsync(command) {
       });
   });
 }
-cmdParserAsync('tar').then(help => console.log(help))
+cmdParserAsync('node').then(help => console.log(help))

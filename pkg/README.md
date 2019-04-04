@@ -2,7 +2,6 @@
 
 [![Travis][build-badge]][build]
 [![npm package][npm-badge]][npm]
-[![Coveralls][coveralls-badge]][coveralls]
 
 ## Help-Parser
 parse any unix standard help output (from running -h/--help)
@@ -64,11 +63,9 @@ gives
 or clone the [git repo](https://github.com/DevinR528/cmdOutput) 
 and help develop and add to this project
 
-[build-badge]: https://img.shields.io/travis/user/repo/master.png?style=flat-square
-[build]: https://travis-ci.org/user/repo
+[build-badge]: https://travis-ci.com/DevinR528/cmdOutput.svg?branch=master
+[build]: https://travis-ci.com/DevinR528/cmdOutput.svg?branch=master
 
 [npm-badge]: https://img.shields.io/npm/v/npm-package.png?style=flat-square
 [npm]: https://www.npmjs.org/package/npm-package
 
-[coveralls-badge]: https://img.shields.io/coveralls/user/repo/master.png?style=flat-square
-[coveralls]: https://coveralls.io/github/user/repo
