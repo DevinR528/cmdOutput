@@ -126,7 +126,7 @@ function parse_doc_options(doc) {
 function parseHelpOutput(doc, cmd) {
   const use = printable_usage(doc);
   const opts = parse_doc_options(doc);
-  const name = use !== null ? getName(use) : null;
+  const name = !cmd ?(use !== null ? getName(use) : null) : cmd;
   const cmdObj = {
     cmdName: cmd || name,
     usage: use,
