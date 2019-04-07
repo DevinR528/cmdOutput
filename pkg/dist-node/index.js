@@ -46,7 +46,10 @@ const Option = function () {
 
     doc = doc.join(' ');
 
-    let _ref;
+    let _ref; // some use tabs
+
+
+    doc = doc.replace(/\t/, '  ');
 
     const _ref1 = (_ref = doc.match(/(.*?)  (.*)/)) != null ? _ref : [null, doc, ''];
 
@@ -59,8 +62,7 @@ const Option = function () {
 
     options = options.replace(/,|=/g, ' ');
     let short = null;
-    let long = null; //added
-
+    let long = null;
     const docs = doc.trim();
 
     const _ref3 = options.split(/\s+/);
@@ -82,7 +84,13 @@ const Option = function () {
 }();
 
 function printable_usage(doc, name) {
-  var usage_split = doc.split(/(usage:)/i); // TODO
+  const cmdUse = new RegExp(`(${name}:)`, 'i');
+
+  if (doc.match(cmdUse)) {
+    doc = doc.replace(cmdUse, 'usage:');
+  }
+
+  const usage_split = doc.split(/(usage:)/i);
 
   if (usage_split.length < 3) {
     return null;
@@ -96,7 +104,10 @@ function printable_usage(doc, name) {
 
   for (let i = 0; i < useArr.length; i++) {
     const e = useArr[i];
-    result.push(e.trim());
+
+    if (e.match(/^\s/) || i === 0) {
+      result.push(e.trim());
+    } else break;
   }
 
   return result;
@@ -124,11 +135,11 @@ function parse_doc_options(doc) {
  */
 
 function parseHelpOutput(doc, cmd) {
-  const use = printable_usage(doc);
+  const use = printable_usage(doc, cmd);
   const opts = parse_doc_options(doc);
   const name = !cmd ? use !== null ? getName(use) : null : cmd;
   const cmdObj = {
-    cmdName: cmd || name,
+    cmdName: name,
     usage: use,
     args: {}
   };
