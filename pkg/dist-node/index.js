@@ -83,13 +83,30 @@ const Option = function () {
   return Option;
 }();
 
-function printable_usage(doc, name) {
+function cleanUp(doc, name) {
+  const errCmd = new RegExp(`${name}: invalid option`, 'i');
+
+  if (doc.match(errCmd)) {
+    const docArr = doc.split('\n');
+
+    if (docArr[0] === '') {
+      doc = docArr.slice(2).join('\n');
+    } else {
+      doc = docArr.slice(1).join('\n');
+    }
+  }
+
   const cmdUse = new RegExp(`(${name}:)`, 'i');
 
   if (doc.match(cmdUse)) {
     doc = doc.replace(cmdUse, 'usage:');
   }
 
+  return doc;
+}
+
+function printable_usage(doc, name) {
+  doc = cleanUp(doc, name);
   const usage_split = doc.split(/(usage:)/i);
 
   if (usage_split.length < 3) {
@@ -137,29 +154,12 @@ function parse_doc_options(doc) {
 function parseHelpOutput(doc, cmd) {
   const use = printable_usage(doc, cmd);
   const opts = parse_doc_options(doc);
-  const name = !cmd ? use !== null ? getName(use) : null : cmd;
+  const name = !cmd ? null : cmd;
   const cmdObj = {
     cmdName: name,
     usage: use,
     args: {}
   };
-
-  function getName(usage) {
-    let val;
-
-    for (let i = 0; i < usage.length; i++) {
-      const ele = usage[i];
-
-      if (ele.match(/(usage: )/i)) {
-        val = ele.split(/(usage: )/i)[2];
-        val = val.split(' ');
-        return val[0].match(/\[|\(/g) ? null : val[0];
-      } else {
-        val = usage[1].split(' ')[0];
-        return val.match(/\[|\(/g) ? null : val;
-      }
-    }
-  }
 
   for (let i = 0; i < opts.length; i++) {
     const o = opts[i];

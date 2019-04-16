@@ -4,7 +4,7 @@ type Help = {
   cmdName: '',
   usage: '',
   args: {
-    ['--name' | '-n']: {
+    '--name': {
       alias: '-n',
       doc: 'bla bla bla'
     }

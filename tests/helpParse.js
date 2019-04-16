@@ -25,7 +25,7 @@ const usageArr = [
 ]
 
 tap.test('multi-line description in args', t => {
-  const help = parseHelp(doc);
+  const help = parseHelp(doc, 'node');
 
   t.same(help.cmdName, 'node')
   t.same(help.usage, usageArr);
@@ -67,7 +67,7 @@ tap.test('description after args one line usage', t => {
   // altered usage line so 
   const usage = [ usageArr[0].concat(' ', usageArr[1]), usageArr[2] ];
   
-  const help = parseHelp(afterArgDoc);
+  const help = parseHelp(afterArgDoc, 'node');
 
   t.same(help.cmdName, 'node')
   t.same(help.usage, usage);
@@ -143,7 +143,6 @@ cannot be read.`;
 tap.test('no "Usage:" but formated like "cmd:"', t => {
   // need cmd name for this one to split up usage
   const help = parseHelp(namedUse, 'pwd');
-  console.log(help)
   t.same(help.cmdName, 'pwd')
   t.same(help.usage[0], 'usage: pwd [-LP]');
   for (const arg in help.args) {
@@ -174,9 +173,40 @@ Options:
 tap.test('no "Usage:" but formated like "cmd:"', t => {
   // need cmd name for this one to split up usage
   const help = parseHelp(noLineBreak, 'pwd');
-  console.log(help)
   t.same(help.cmdName, 'pwd')
   t.same(help.usage[1], 'pwd [usage tab test]');
+  for (const arg in help.args) {
+    if (help.args.hasOwnProperty(arg)) {
+      const cmd = help.args[arg];
+      // make sure there is a --help command or change arg
+      if (arg === '-P' && typeof cmd === 'object'){
+        t.pass('argument info saved as object')
+        t.same(cmd.doc, 'print the physical directory, without any symbolic links')
+
+        t.same(cmd.alias, '-P')
+      } else if (arg === '-P') {
+        t.fail('something went wrong argument not object')
+      }
+    }
+  }
+  t.end()
+})
+
+const errorWithDoc = `pwd: invalid option -- '-'
+pwd: pwd [-LP]
+     pwd [usage tab test]
+
+Print the name of the current working directory.
+
+Options:
+    -P  print the physical directory, without any symbolic links
+`
+// for the error output some can still be parsed
+tap.test('result of error but still get "help" output', t => {
+  // need cmd name for this one to split up usage
+  const help = parseHelp(errorWithDoc, 'pwd');
+  t.same(help.cmdName, 'pwd')
+  t.same(help.usage[0], 'usage: pwd [-LP]');
   for (const arg in help.args) {
     if (help.args.hasOwnProperty(arg)) {
       const cmd = help.args[arg];
